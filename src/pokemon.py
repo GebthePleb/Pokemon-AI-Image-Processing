@@ -4,6 +4,10 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import cv2 
 import matplotlib.pyplot as plt
 
+import tensorflow as tf
+from keras.models import Sequential
+from keras.layers import Dense, Activation, Flatten
+
 # defining root directory
 from PIL import Image
 
@@ -17,31 +21,31 @@ File_names = os.listdir(files)
 #print(File_names)
 
 # plot here
-fig, axes = plt.subplots(2, 3, figsize=(15, 8))
-first_five = File_names[0:6]
+# fig, axes = plt.subplots(2, 3, figsize=(15, 8))
+# first_five = File_names[0:6]
 
-def subplots():
-# Use the axes for plotting
-    i = 0
-    j = 0
-    k = 0
-    for k in range(5):
-        state = os.path.join(root_dir, first_five[k])
-        img = Image.open(state)
-        axes[i,j].imshow(img)
+# def subplots():
+# # Use the axes for plotting
+#     i = 0
+#     j = 0
+#     k = 0
+#     for k in range(5):
+#         state = os.path.join(root_dir, first_five[k])
+#         img = Image.open(state)
+#         axes[i,j].imshow(img)
         
-        if k==2:
-            i +=1
-            j = 0
-        else:
-            j += 1
+#         if k==2:
+#             i +=1
+#             j = 0
+#         else:
+#             j += 1
 
 
-    plt.tight_layout(pad=2)
-    #prints the first 5 pokemone images
-    #plt.show()
+#     plt.tight_layout(pad=2)
+#     #prints the first 5 pokemone images
+#     #plt.show()
     
-subplots()
+# subplots()
 
 
 data = pd.read_csv(r"assets\pokemon_labels.csv")
@@ -93,7 +97,48 @@ for file in File_names:
     final_labels.append(np.array(label))
 
 #Testing to make sure one is correct. In this case growlithe
-cv2.imshow('img',final_images[18])
-print(final_labels[18])
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow('img',final_images[18])
+# print(final_labels[18])
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+final_images = np.array(final_images, dtype = np.float32)/255.0
+final_labels = np.array(final_labels, dtype = np.int8).reshape(809, 1)
+
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(32, (3,3), activation='relu', input_shape=(120, 120,3)),
+    tf.keras.layers.MaxPooling2D(),
+    tf.keras.layers.Conv2D(64, (3,3), activation='relu'),
+    tf.keras.layers.MaxPooling2D(),
+    tf.keras.layers.Conv2D(256, (3,3), activation='relu'),
+    tf.keras.layers.MaxPooling2D(),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation='relu'),
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(18, activation='softmax')
+])
+
+model.compile(optimizer='rmsprop',
+              loss="sparse_categorical_crossentropy",
+              metrics=["accuracy"])
+
+print("Model Creation")
+
+history = model.fit(final_images, final_labels, epochs=20, batch_size=32,
+                    validation_split=0.1)
+
+print("Model Done")
+
+
+
+
+val_ac = history.history["val_accuracy"]
+epochs = range(1, 21)
+plt.plot(epochs, val_ac, "b--",
+         label="Validation accuracy")
+plt.title("Validation accuracy")
+plt.xlabel("Epochs")
+plt.ylabel("Accuracy")
+plt.legend()
+plt.show()
