@@ -11,7 +11,7 @@ from keras.layers import Dense, Activation, Flatten
 # defining root directory
 from PIL import Image
 
-root_dir = r"assets\images"
+root_dir = r"C:\Users\1opal\Documents\GitHub\Pokemone-AI-Image-Processing\assets\images_flipped"
 
 files =  os.path.join(root_dir)
 File_names = os.listdir(files)
@@ -48,7 +48,7 @@ File_names = os.listdir(files)
 # subplots()
 
 
-data = pd.read_csv(r"assets\pokemon_labels.csv")
+data = pd.read_csv(r"C:\Users\1opal\Documents\GitHub\Pokemone-AI-Image-Processing\assets\pokemon_labels.csv")
 
 #use this to see that the csv file is working and printing
 #print(data.head())
