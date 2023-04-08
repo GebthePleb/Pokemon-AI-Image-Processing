@@ -11,7 +11,15 @@ from keras.layers import Dense, Activation, Flatten
 # defining root directory
 from PIL import Image
 
-root_dir = r"C:\Users\1opal\Documents\GitHub\Pokemone-AI-Image-Processing\assets\images_flipped"
+
+
+# root_dir = r"assets\images"
+# root_dir = r"assets\images_b"
+# root_dir = r"assets\images_flipped"
+root_dir = r"C:\Users\1opal\Documents\GitHub\Pokemone-AI-Image-Processing\assets\images"
+# root_dir = r"C:\Users\1opal\Documents\GitHub\Pokemone-AI-Image-Processing\assets\images_b"
+# root_dir = r"C:\Users\1opal\Documents\GitHub\Pokemone-AI-Image-Processing\assets\images_flipped"
+
 
 files =  os.path.join(root_dir)
 File_names = os.listdir(files)
@@ -48,7 +56,11 @@ File_names = os.listdir(files)
 # subplots()
 
 
+
+# data = pd.read_csv(r"assets\pokemon_labels.csv")
 data = pd.read_csv(r"C:\Users\1opal\Documents\GitHub\Pokemone-AI-Image-Processing\assets\pokemon_labels.csv")
+
+
 
 #use this to see that the csv file is working and printing
 #print(data.head())
@@ -125,7 +137,7 @@ model.compile(optimizer='rmsprop',
 
 print("Model Creation")
 
-history = model.fit(final_images, final_labels, epochs=20, batch_size=32,
+history = model.fit(final_images, final_labels, epochs=10, batch_size=32,
                     validation_split=0.1)
 
 print("Model Done")
@@ -134,7 +146,7 @@ print("Model Done")
 
 
 val_ac = history.history["val_accuracy"]
-epochs = range(1, 21)
+epochs = range(1, 11)
 plt.plot(epochs, val_ac, "b--",
          label="Validation accuracy")
 plt.title("Validation accuracy")
