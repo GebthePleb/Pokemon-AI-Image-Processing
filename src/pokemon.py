@@ -109,7 +109,8 @@ count = 0
 #files =  os.path.join(root_dir)
 #files2 =  os.path.join(root_dir2)
 
-
+#Taken from: LINK BELOW
+#https://www.kaggle.com/code/shubhamptrivedi/pokemon-classification-model-using-tensorflow
 for file in File_names:
     count += 1
     img = cv2.imread(os.path.join(root_dir, file), cv2.COLOR_BGR2GRAY) 
@@ -119,7 +120,8 @@ for file in File_names:
     # append label in final_labels list
     final_labels.append(np.array(label))
 
-
+#Taken from: LINK BELOW
+#https://www.kaggle.com/code/shubhamptrivedi/pokemon-classification-model-using-tensorflow
 for file in File_names2:
     count += 1
     img = cv2.imread(os.path.join(root_dir2, file), cv2.COLOR_BGR2GRAY) 
@@ -128,7 +130,9 @@ for file in File_names2:
     final_images.append(np.array(img))
     # append label in final_labels list
     final_labels.append(np.array(label))
-
+    
+#Taken from: LINK BELOW
+#https://www.kaggle.com/code/shubhamptrivedi/pokemon-classification-model-using-tensorflow
 for file in File_names3:
     count += 1
     img = cv2.imread(os.path.join(root_dir3, file), cv2.COLOR_BGR2GRAY) 
@@ -137,7 +141,9 @@ for file in File_names3:
     validation_images.append(np.array(img))
     # append label in final_labels list
     validation_labels.append(np.array(label))
-
+    
+#Taken from: LINK BELOW
+#https://www.kaggle.com/code/shubhamptrivedi/pokemon-classification-model-using-tensorflow
 for file in File_names4:
     count += 1
     img = cv2.imread(os.path.join(root_dir4, file), cv2.COLOR_BGR2GRAY) 
@@ -148,11 +154,14 @@ for file in File_names4:
     validation_labels.append(np.array(label))
 
 #Testing to make sure one is correct. In this case growlithe
-cv2.imshow('img',final_images[1000])
-print(final_labels[1000])
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imshow('img',final_images[1000])
+#print(final_labels[1000])
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
 
+
+#Taken from: LINK BELOW
+#https://www.kaggle.com/code/shubhamptrivedi/pokemon-classification-model-using-tensorflow
 final_images = np.array(final_images, dtype = np.float32)/255.0
 #1458
 final_labels = np.array(final_labels, dtype = np.int8).reshape(1458, 1)
@@ -161,7 +170,8 @@ validation_images = np.array(validation_images, dtype = np.float32)/255.0
 validation_labels = np.array(validation_labels, dtype = np.int8).reshape(160, 1)
 
 
-
+#OUR MODEL AND CODE
+#Inspired by some reseach on the the different layers, but nothing copied.
 model = tf.keras.Sequential([
     tf.keras.layers.Conv2D(32, (3,3), activation='relu', input_shape=(120, 120,3)),
     tf.keras.layers.MaxPooling2D(),
